@@ -18,7 +18,6 @@ beforeEach(async () => {
             data: evm.bytecode.object,
         })
         .send({ from: accounts[0], gas: "1000000" });
-    console.log(lotery);
 });
 
 describe("Verify lotery contract", () => {

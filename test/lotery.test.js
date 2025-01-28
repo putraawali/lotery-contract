@@ -18,6 +18,7 @@ beforeEach(async () => {
             data: evm.bytecode.object,
         })
         .send({ from: accounts[0], gas: "1000000" });
+    console.log(lotery);
 });
 
 describe("Verify lotery contract", () => {
@@ -129,14 +130,6 @@ describe("Test pickWinner method", () => {
 
     it("Verify only can pick the winner if players more than equal 1", async () => {
         try {
-            await lotery.methods.reset().send({
-                from: accounts[0],
-            });
-        } catch (_) {
-            assert(false, "Should be success reseting players");
-        }
-
-        try {
             await lotery.methods.pickWinner().send({
                 from: accounts[0],
             });
@@ -166,12 +159,12 @@ describe("Test pickWinner method", () => {
             assert(false, "Should be success to pick the winner");
         }
 
-        let players = await lotery.methods.getPlayers().call();
-        assert.equal(
-            players.length,
-            0,
-            "Players should be reseted after found the winner"
-        );
+        // let players = await lotery.methods.getPlayers().call();
+        // assert.equal(
+        //     players.length,
+        //     0,
+        //     "Players should be reseted after found the winner"
+        // );
     });
 });
 

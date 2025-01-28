@@ -6,6 +6,7 @@ contract Lotery {
     address public manager;
     address[] private players;
     bool public isLoteryOpen = true;
+    address public winner;
 
     constructor() {
         manager = msg.sender;
@@ -25,18 +26,17 @@ contract Lotery {
 
     function openLotery() public restricted {
         isLoteryOpen = true;
+        winner = address(0);
+        delete players;
     }
 
     function pickWinner() public restricted {
         require(players.length > 0, "No participant on this lotery");
 
         uint256 winnerIndex = random() % players.length;
-        address winner = players[winnerIndex];
+        winner = players[winnerIndex];
         payable(winner).transfer(address(this).balance);
-
-        // Reset the players and reopen the lotery
-        reset();
-        openLotery();
+        closeLotery();
     }
 
     // Helper function: Pseudo random number generator
@@ -53,9 +53,5 @@ contract Lotery {
     modifier restricted() {
         require(msg.sender == manager, "Restriced, manager access only");
         _;
-    }
-
-    function reset() public restricted {
-        players = new address[](0);
     }
 }
